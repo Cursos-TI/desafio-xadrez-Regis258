@@ -3,21 +3,36 @@
 #include <locale.h>
 #include <string.h>
 
-// Desafio de Xadrez - MateCheck
-// Este código inicial serve como base para o desenvolvimento do sistema de movimentação das peças de xadrez.
-// O objetivo é utilizar estruturas de repetição e funções para determinar os limites de movimentação dentro do jogo.
-
-//funcções obrigatórias para o funcionamento do jogo e melhorar a aparência do código
-
-//função para imprimir a quantidade que a rainha irá se movar com a quantidade de casas que o usuário pediu
+// Função da estrutura de repetição da Rainha
 void repetirRainha(const char *lado, int casas)
 {
-    for (int i = 1; i <= casas; i++)
+    if (strcmp(lado, "cima") == 0 ||
+        strcmp(lado, "baixo") == 0 ||
+        strcmp(lado, "esquerda") == 0 ||
+        strcmp(lado, "direita") == 0)
     {
-        printf("Rainha movendo para %s %d casas\n", lado, i);
+        for (int i = 1; i <= casas; i++)
+        {
+            printf("Rainha movendo %s %d casas\n", lado, i);
+        }
+    }
+    else if (strcmp(lado, "diagonalCD") == 0 ||
+             strcmp(lado, "diagonalBD") == 0 ||
+             strcmp(lado, "diagonalCE") == 0 ||
+             strcmp(lado, "diagonalBE") == 0)
+    {
+        for (int i = 1; i <= casas; i++)
+        {
+            printf("Rainha movendo para %s %d casas\n", lado, i);
+        }
+    }
+    else
+    {
+        printf("Movimento inválido para a Rainha!\n");
     }
 }
-//função para imprimir a quantidade que a torre irá se movar com a quantidade de casas que o usuário pediu
+
+// Função da estrutura de repetição da torre
 void repetirTorre(const char *lado, int casas)
 {
     for (int i = 1; i <= casas; i++)
@@ -26,7 +41,7 @@ void repetirTorre(const char *lado, int casas)
     }
 }
 
-//função para imprimir a quantidade que o bispo irá se movar com a quantidade de casas que o usuário pediu
+// Função da estrutura de repetição do Bispo
 void repetirBispo(const char *lado, int casas)
 {
     for (int i = 1; i <= casas; i++)
@@ -35,7 +50,32 @@ void repetirBispo(const char *lado, int casas)
     }
 }
 
-//função que serve para validação de movinmento (não ultrapassar a quantidade maxima do tabuleiro 8 casas)
+// Função da estrutura de decisão do movimento do Cavalo
+void repetirCavalo(const char *cavalo)
+{
+    if (strcmp(cavalo, "cimaDireita") == 0)
+    {
+        printf("Cavalo movendo em L: cima + direita + direita!\n");
+    }
+    else if (strcmp(cavalo, "baixoDireita") == 0)
+    {
+        printf("Cavalo movendo em L: baixo + direita + direita!\n");
+    }
+    else if (strcmp(cavalo, "cimaEsquerda") == 0)
+    {
+        printf("Cavalo movendo em L: cima + esquerda + esquerda!\n");
+    }
+    else if (strcmp(cavalo, "baixoEsquerda") == 0)
+    {
+        printf("Cavalo movendo em L: baixo + esquerda + esquerda!\n");
+    }
+    else
+    {
+        printf("Movimento de cavalo inválido!\n");
+    }
+}
+
+// estrutura de decisão de movimento das peças
 int validarMovimento(const char *escolha, const char **moverArray, int totalMovimentos)
 {
     for (int i = 0; i < totalMovimentos; i++)
@@ -45,57 +85,37 @@ int validarMovimento(const char *escolha, const char **moverArray, int totalMovi
             return 1;
         }
     }
-    printf("Lado Invalido!\n");
+    printf("Lado inválido!\n");
     return 0;
 }
-int main() {
-    // Nível Novato - Movimentação das Peças
-    // Sugestão: Declare variáveis constantes para representar o número de casas que cada peça pode se mover.
 
-    // Implementação de Movimentação do Bispo
-    // Sugestão: Utilize uma estrutura de repetição para simular a movimentação do Bispo em diagonal.
-
-    // Implementação de Movimentação da Torre
-    // Sugestão: Utilize uma estrutura de repetição para simular a movimentação da Torre para a direita.
-
-    // Implementação de Movimentação da Rainha
-    // Sugestão: Utilize uma estrutura de repetição para simular a movimentação da Rainha para a esquerda.
-
-    // Nível Aventureiro - Movimentação do Cavalo
-    // Sugestão: Utilize loops aninhados para simular a movimentação do Cavalo em L.
-    // Um loop pode representar a movimentação horizontal e outro vertical.
-
-    // Nível Mestre - Funções Recursivas e Loops Aninhados
-    // Sugestão: Substitua as movimentações das peças por funções recursivas.
-    // Exemplo: Crie uma função recursiva para o movimento do Bispo.
-
-    // Sugestão: Implemente a movimentação do Cavalo utilizando loops com variáveis múltiplas e condições avançadas.
-    // Inclua o uso de continue e break dentro dos loops.
-
+int main()
+{
     setlocale(LC_ALL, "Portuguese");
 
     const char *moverTorre[] = {"cima", "baixo", "esquerda", "direita"};
-    const char *moverBispo[] = {"diagonalCD", "diagonalB", "diagonalCE", "diagonalBE"};
-    const char *moverRainha[] = {"cima", "baixo", "esquerda", "direita"};
-    const char *pecas[] = {"torre", "bispo", "rainha"};
+    const char *moverBispo[] = {"diagonalCD", "diagonalBD", "diagonalCE", "diagonalBE"};
+    const char *moverRainha[] = {"cima", "baixo", "esquerda", "direita", "diagonalCD", "diagonalBD", "diagonalCE", "diagonalBE"};
+    const char *moverCavalo[] = {"cimaDireita", "baixoDireita", "cimaEsquerda", "baixoEsquerda"};
+    const char *pecas[] = {"torre", "bispo", "rainha", "cavalo"};
 
     char escolha[20];
     int casas;
     int movimentoValido = 0;
 
-    printf("Bem vindo ao jogo de Xadrez\n");
+    printf("Bem-vindo ao jogo de Xadrez\n");
 
     do
     {
-        printf("\nDigite qual peca voce quer mover (torre, bispo, rainha) ou 'sair' para encerrar:\n");
+        printf("\nDigite qual peça você quer mover (torre, bispo, rainha, cavalo) ou 'sair' para encerrar:\n");
         scanf("%19s", escolha);
 
-        if (strcmp(escolha, pecas[0]) == 0) // torre
+        if (strcmp(escolha, pecas[0]) == 0) // Torre
         {
-            printf("Voce escolheu a %s!\n", pecas[0]);
+            printf("Você escolheu a %s!\n", pecas[0]);
             do
             {
-                printf("Digite para qual lado voce quer mover a sua %s (cima, baixo, esquerda, direita!) ou 'voltar':\n", pecas[0]);
+                printf("Digite para qual lado você quer mover a sua %s (cima, baixo, esquerda, direita) ou 'voltar':\n", pecas[0]);
                 scanf("%19s", escolha);
                 if (strcmp(escolha, "voltar") == 0)
                 {
@@ -103,14 +123,12 @@ int main() {
                 }
                 if (validarMovimento(escolha, moverTorre, 4))
                 {
-                    printf("Digite quantas casas voce quer andar com sua %s: ", pecas[0]);
+                    printf("Digite quantas casas você quer andar com sua %s: ", pecas[0]);
 
                     if (scanf("%d", &casas) != 1)
-                    { // Verifica se a leitura foi bem-sucedida
-                        printf("Entrada invalida! Por favor, digite um numero.\n");
-                        // Limpa o buffer de entrada
-                        while (getchar() != '\n')
-                            ;
+                    {
+                        printf("Entrada inválida! Por favor, digite um número.\n");
+                        while (getchar() != '\n');
                         movimentoValido = 0;
                     }
                     else
@@ -127,12 +145,16 @@ int main() {
         }
         else if (strcmp(escolha, pecas[1]) == 0) // Bispo
         {
-            printf("Voce escolheu o %s!\n", pecas[1]);
+            printf("Você escolheu o %s!\n", pecas[1]);
             do
             {
-                printf("Digite para qual lado você quer mover o seu %s (diagonalCE = cima esquerda\ndiagonalBE = baixo esquerda\n)");
-                printf("diagonalCD = cima direita\ndiagonalBD = baixo direita\n");
+                printf("Digite para qual lado você quer mover o seu %s:\n", pecas[1]);
+                printf("diagonalCE = cima esquerda\n");
+                printf("diagonalBE = baixo esquerda\n");
+                printf("diagonalCD = cima direita\n");
+                printf("diagonalBD = baixo direita\n");
                 scanf("%19s", escolha);
+
                 if (strcmp(escolha, "voltar") == 0)
                 {
                     break;
@@ -141,10 +163,9 @@ int main() {
                 {
                     printf("Digite quantas casas você quer mover o seu %s: ", pecas[1]);
                     if (scanf("%d", &casas) != 1)
-                    { // verifica se a quantidade de casas que usuario digitou é permitia [válida]
+                    {
                         printf("Entrada inválida! Por favor, digite um número.\n");
-                        while (getchar() != 1)
-                            ;
+                        while (getchar() != '\n');
                         movimentoValido = 0;
                     }
                     else
@@ -153,29 +174,34 @@ int main() {
                         movimentoValido = 1;
                     }
                 }
-            } while (movimentoValido = 0);
+                else
+                {
+                    movimentoValido = 0;
+                }
+            } while (movimentoValido == 0); 
         }
         else if (strcmp(escolha, pecas[2]) == 0) // Rainha
         {
-            printf("Voce escolheu a %s!\n", pecas[2]);
+            printf("Você escolheu a %s!\n", pecas[2]);
             do
             {
-                printf("Digite para qual lado voce quer mover a sua %s (cima, baixo, esquerda, direita!) ou 'voltar':\n", pecas[2]);
+                printf("Digite para qual lado você quer mover a sua %s:\n", pecas[2]);
+                printf("Opções: cima, baixo, esquerda, direita, diagonalCD, diagonalBD, diagonalCE, diagonalBE\n");
+                printf("Digite 'voltar' para retornar.\n");
                 scanf("%19s", escolha);
+
                 if (strcmp(escolha, "voltar") == 0)
                 {
                     break;
                 }
-                if (validarMovimento(escolha, moverRainha, 4))
+                if (validarMovimento(escolha, moverRainha, 8))
                 {
-                    printf("Digite quantas casas voce quer andar com sua %s: ", pecas[2]);
+                    printf("Digite quantas casas você quer andar com sua %s: ", pecas[2]);
 
-                    // --- CORREÇÃO DO SCANF AQUI ---
                     if (scanf("%d", &casas) != 1)
-                    { // Verifica se a leitura foi bem-sucedida
-                        printf("Entrada invalida! Por favor, digite um numero.\n");
-                        while (getchar() != '\n')
-                            ;
+                    {
+                        printf("Entrada inválida! Por favor, digite um número.\n");
+                        while (getchar() != '\n');
                         movimentoValido = 0;
                     }
                     else
@@ -190,9 +216,34 @@ int main() {
                 }
             } while (movimentoValido == 0);
         }
+        else if (strcmp(escolha, pecas[3]) == 0) // Cavalo
+        {
+            printf("Você escolheu o %s!\n", pecas[3]);
+            do
+            {
+                printf("Digite para qual lado você quer mover o seu %s (cimaDireita, baixoDireita, cimaEsquerda, baixoEsquerda) ou 'voltar':\n", pecas[3]);
+                printf("Lembrando: o cavalo se move em 'L'.\n");
+                scanf("%19s", escolha);
+
+                if (strcmp(escolha, "voltar") == 0)
+                {
+                    break;
+                }
+                if (validarMovimento(escolha, moverCavalo, 4))
+                {
+                    repetirCavalo(escolha);
+                    movimentoValido = 1;
+                }
+                else
+                {
+                    movimentoValido = 0;
+                }
+
+            } while (movimentoValido == 0);
+        }
         else if (strcmp(escolha, "sair") != 0)
         {
-            printf("Peca invalida!\n");
+            printf("Peça inválida!\n");
         }
     } while (strcmp(escolha, "sair") != 0);
 
